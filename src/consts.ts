@@ -8,6 +8,12 @@ export const META_KEY = {
     },
 } as const;
 
+export function propertyMatch(long: string): string {
+    const rg = new RegExp(META_KEY.profix + "(\\w+)");
+    const m = long.match(rg);
+    return m ? m[1] : "";
+}
+
 type GenKey = (property: string) => string;
 interface Def {
     alias: GenKey;

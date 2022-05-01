@@ -12,3 +12,9 @@ interface BaseMetaDef {
 export interface ValueMetaDef extends BaseMetaDef {
     value: unknown;
 }
+
+export interface RequiredMetaDef extends BaseMetaDef {
+    required: boolean;
+}
+
+export type Types = Number | String;

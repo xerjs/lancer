@@ -7,18 +7,20 @@ export class Dox implements Commander {
     args!: string[];
     sourceArgs!: string[];
 
-    @alias<Dox>("name")
-    readonly x!: string;
-
     @value("xname")
     name!: string;
 
     @value("input")
     input!: string;
 
-    @alias<Dox>("input")
+    @value("input2")
+    input2!: string;
+
     @required()
-    y!: number;
+    y0!: number;
+
+    @required()
+    y1!: number;
 
     async execute() {
 
