@@ -1,15 +1,24 @@
-import { Cmd, alias, value, Commander, Lancer } from "../src";
+import { Cmd, alias, value, Commander, Lancer, required } from "../src";
 
 @Cmd("")
 export class Dox implements Commander {
     constructor() { }
+
+    args!: string[];
+    sourceArgs!: string[];
+
     @alias<Dox>("name")
     readonly x!: string;
 
     @value("xname")
     name!: string;
 
-    input!: number;
+    @value("input")
+    input!: string;
+
+    @alias<Dox>("input")
+    @required()
+    y!: number;
 
     async execute() {
 
