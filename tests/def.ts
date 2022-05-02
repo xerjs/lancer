@@ -2,9 +2,7 @@ import { Cmd, value, Commander, Lancer, required, property, length, pattern } fr
 
 @Cmd("")
 export class Dox implements Commander {
-    constructor() { }
 
-    args!: string[];
     sourceArgs!: string[];
 
     @value("input")
@@ -36,7 +34,6 @@ export class StrBox implements Commander {
     execute(): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    args!: string[];
     sourceArgs!: string[];
 
     @length({ min: 3, max: 5 })
@@ -44,4 +41,15 @@ export class StrBox implements Commander {
 
     @pattern("^lx\\w+0")
     name!: string;
+}
+
+@Cmd("num")
+export class NumBox implements Commander {
+    execute(): Promise<void> {
+        throw new Error("Method not implemented.");
+    }
+    sourceArgs!: string[];
+
+    @property("integer")
+    id!: number;
 }

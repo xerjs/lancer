@@ -1,6 +1,6 @@
-import { Avalon, ClassType, designType } from "@xerjs/avalon";
+import { Avalon, ClassType } from "@xerjs/avalon";
 import { typeMeta, valueMeta } from "./decorator";
-import { requiredMeta, lengthMeta, patternMeta } from "./schema";
+import { requiredMeta, lengthMeta, patternMeta, propertyMeta } from "./schema";
 import { Commander } from "./types";
 import { CmdMeta, schemaMatch } from "./utils";
 
@@ -50,7 +50,13 @@ export class Lancer extends Avalon {
                     this.stringSchame(svc, k, properties[k]);
                     break;
                 case Number:
-                    properties[k] = { type: "number" };
+                    if (propertyMeta(svc.prototype, k) === "integer") {
+                        properties[k] = { type: "integer" };
+                    }
+                    else {
+                        properties[k] = { type: "number" };
+                    }
+
                     break;
                 case Boolean:
                     properties[k] = { type: "boolean" };
@@ -62,7 +68,7 @@ export class Lancer extends Avalon {
 
         const err = schemaMatch({ type: "object", required, properties }, argv);
         if (err) {
-            throw new Error(err.message);
+            throw new Error(err.instancePath + ": " + err.message);
         }
     }
 

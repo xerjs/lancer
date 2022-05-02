@@ -1,12 +1,18 @@
 import { META_DEF, META_KEY, propertyMatch } from "./consts";
 import { LengthMetaDef, PatternMetaDef, RequiredMetaDef } from "./types";
 
+type PropertyType = "number" | "integer" | "auto";
 
-export function property(): PropertyDecorator {
+export function property(type: PropertyType = "auto"): PropertyDecorator {
     return (target: Object, key: string | symbol) => {
         const k = META_KEY.property(key as string);
-        return Reflect.defineMetadata(k, key, target);
+        return Reflect.defineMetadata(k, type, target);
     };
+}
+
+export function propertyMeta(target: object, propertyKey: string): PropertyType | undefined {
+    const k = META_KEY.property(propertyKey as string);
+    return Reflect.getMetadata(k, target);
 }
 
 export function required(): PropertyDecorator {
