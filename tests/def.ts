@@ -7,9 +7,6 @@ export class Dox implements Commander {
     args!: string[];
     sourceArgs!: string[];
 
-    @value("xname")
-    name!: string;
-
     @value("input")
     input!: string;
 

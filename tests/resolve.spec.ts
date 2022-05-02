@@ -9,7 +9,7 @@ describe("lancer base", () => {
         container.initialize([Dox]);
     });
 
-    it("resole commder", () => {
+    it("resolve commder", () => {
         const cmd = container.getCommander(strs);
         assert.ok(cmd);
         assert.ok(cmd instanceof Dox);
