@@ -21,6 +21,11 @@ export interface LengthMetaDef extends BaseMetaDef {
     maxLength?: number;
 }
 
+export interface RangeMetaDef extends BaseMetaDef {
+    minimum?: number;
+    maximum?: number;
+}
+
 export interface PatternMetaDef extends BaseMetaDef {
     value: string;
 }

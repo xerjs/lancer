@@ -1,6 +1,6 @@
 import { Avalon, ClassType } from "@xerjs/avalon";
 import { typeMeta, valueMeta } from "./decorator";
-import { requiredMeta, lengthMeta, patternMeta, propertyMeta } from "./schema";
+import { requiredMeta, lengthMeta, patternMeta, propertyMeta, rangeMeta } from "./schema";
 import { Commander } from "./types";
 import { CmdMeta, schemaMatch } from "./utils";
 
@@ -47,7 +47,7 @@ export class Lancer extends Avalon {
             switch (v) {
                 case String:
                     properties[k] = { type: "string" };
-                    this.stringSchame(svc, k, properties[k]);
+                    this.stringSchema(svc, k, properties[k]);
                     break;
                 case Number:
                     if (propertyMeta(svc.prototype, k) === "integer") {
@@ -56,7 +56,7 @@ export class Lancer extends Avalon {
                     else {
                         properties[k] = { type: "number" };
                     }
-
+                    this.numberSchema(svc, k, properties[k]);
                     break;
                 case Boolean:
                     properties[k] = { type: "boolean" };
@@ -72,7 +72,7 @@ export class Lancer extends Avalon {
         }
     }
 
-    stringSchame(svc: ClassType, k: string, field: object): void {
+    stringSchema(svc: ClassType, k: string, field: object): void {
         const len = lengthMeta(svc.prototype, k);
         if (len) {
             const { maxLength, minLength } = len;
@@ -81,6 +81,14 @@ export class Lancer extends Avalon {
         const pattern = patternMeta(svc.prototype, k);
         if (pattern) {
             Object.assign(field, { pattern: pattern.value });
+        }
+    }
+
+    numberSchema(svc: ClassType, k: string, field: object): void {
+        const range = rangeMeta(svc.prototype, k);
+        if (range) {
+            const { maximum, minimum } = range;
+            Object.assign(field, { maximum, minimum });
         }
     }
 

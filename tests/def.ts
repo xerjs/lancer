@@ -1,4 +1,4 @@
-import { Cmd, value, Commander, Lancer, required, property, length, pattern } from "../src";
+import { Cmd, value, Commander, Lancer, required, property, length, pattern, range } from "../src";
 
 @Cmd("")
 export class Dox implements Commander {
@@ -52,4 +52,8 @@ export class NumBox implements Commander {
 
     @property("integer")
     id!: number;
+
+    @property("integer")
+    @range({ min: 18, max: 65 })
+    age!: number;
 }

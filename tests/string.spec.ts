@@ -8,7 +8,7 @@ describe("string schema", () => {
         container.initialize([StrBox]);
     });
 
-    it("resolve commder;expect=ok", () => {
+    it("resolve StrBox;expect=ok", () => {
         const strs = "--input abc --name lxAA0 ab str".split(" ");
         const cmd = container.getCommander(strs) as StrBox;
         assert.ok(cmd);
@@ -16,19 +16,19 @@ describe("string schema", () => {
         assert.deepEqual(cmd.sourceArgs, ["ab", "str"]);
     });
 
-    it("resolve commder;input=2str;expect=error", () => {
+    it("resolve StrBox;input=2str;expect=error", () => {
         const strs = "--input ab str".split(" ");
         const msg = "must NOT have fewer than";
         assert.throw(() => container.getCommander(strs), msg);
     });
 
-    it("resolve commder;input=6str;expect=error", () => {
+    it("resolve StrBox;input=6str;expect=error", () => {
         const strs = "--input abv123 str".split(" ");
         const msg = "must NOT have more than";
         assert.throw(() => container.getCommander(strs), msg);
     });
 
-    it("resolve commder;input=name;expect=error", () => {
+    it("resolve StrBox;input=name;expect=error", () => {
         const strs = "--name err str".split(" ");
         const msg = "must match pattern";
         assert.throw(() => container.getCommander(strs), msg);

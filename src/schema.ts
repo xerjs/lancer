@@ -1,8 +1,11 @@
 import { META_DEF, META_KEY, propertyMatch } from "./consts";
-import { LengthMetaDef, PatternMetaDef, RequiredMetaDef } from "./types";
+import { LengthMetaDef, PatternMetaDef, RangeMetaDef, RequiredMetaDef } from "./types";
 
 type PropertyType = "number" | "integer" | "auto";
 
+/**
+ * 至少加上这个才能验证类型
+ */
 export function property(type: PropertyType = "auto"): PropertyDecorator {
     return (target: Object, key: string | symbol) => {
         const k = META_KEY.property(key as string);
@@ -73,5 +76,21 @@ export function pattern(re: string): PropertyDecorator {
 
 export function patternMeta(target: object, propertyKey: string): PatternMetaDef | undefined {
     const k = META_DEF.pattern(propertyKey as string);
+    return Reflect.getMetadata(k, target, propertyKey);
+}
+
+export function range(opt: { min?: number, max?: number; }): PropertyDecorator {
+    return (target: Object, key: string | symbol) => {
+        const tt = propertyMeta(target, key as string);
+        if (tt) {
+            property(tt)(target, key);
+        }
+        const k = META_DEF.range(key as string);
+        return Reflect.defineMetadata(k, { key, maximum: opt.max, minimum: opt.min }, target, key);
+    };
+}
+
+export function rangeMeta(target: object, propertyKey: string): RangeMetaDef | undefined {
+    const k = META_DEF.range(propertyKey as string);
     return Reflect.getMetadata(k, target, propertyKey);
 }
