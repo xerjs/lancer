@@ -3,8 +3,7 @@ import { Dox, getContainer } from "./def";
 
 describe("lancer base", () => {
     const container = getContainer();
-    const strs = "--y0 3 --y1 4".split(" ");
-
+    const strs = "--y0 3 --y1 4 --can".split(" ");
     before(() => {
         container.initialize([Dox]);
     });
@@ -22,5 +21,11 @@ describe("lancer base", () => {
         assert.ok(cmd instanceof Dox);
         assert.equal(cmd.input, "input");
         assert.equal(cmd.input2, "input2");
+        assert.ok(cmd.can);
+    });
+
+    it("reqired err", () => {
+        const args = "--y1 4 --can".split(" ");
+        assert.throw(() => container.getCommander(args), "required");
     });
 });

@@ -1,6 +1,6 @@
 import { Avalon, ClassType, designType } from "@xerjs/avalon";
 import { typeMeta, valueMeta } from "./decorator";
-import { requiredMeta } from "./schema";
+import { requiredMeta, lengthMeta, patternMeta } from "./schema";
 import { Commander } from "./types";
 import { CmdMeta, schemaMatch } from "./utils";
 
@@ -27,7 +27,7 @@ export class Lancer extends Avalon {
 
         this.checkSchema(svcCmd, argv);
         const cmder: Commander = this.resolve(svcCmd);
-        Object.assign(cmder, argv);
+        Object.assign(cmder, argv); //赋值字段
 
         cmder.sourceArgs = names;
         this.assignValue(svcCmd, cmder);
@@ -43,9 +43,13 @@ export class Lancer extends Avalon {
             switch (v) {
                 case String:
                     properties[k] = { type: "string" };
+                    this.stringSchame(svc, k, properties[k]);
                     break;
                 case Number:
                     properties[k] = { type: "number" };
+                    break;
+                case Boolean:
+                    properties[k] = { type: "boolean" };
                     break;
                 default:
                     break;
@@ -55,6 +59,18 @@ export class Lancer extends Avalon {
         const err = schemaMatch({ type: "object", required, properties }, argv);
         if (err) {
             throw new Error(err.message);
+        }
+    }
+
+    stringSchame(svc: ClassType, k: string, field: object): void {
+        const len = lengthMeta(svc.prototype, k);
+        if (len) {
+            const { maxLength, minLength } = len;
+            Object.assign(field, { maxLength, minLength });
+        }
+        const pattern = patternMeta(svc.prototype, k);
+        if (pattern) {
+            Object.assign(field, { pattern: pattern.value });
         }
     }
 
@@ -69,4 +85,4 @@ export class Lancer extends Avalon {
 
 export * from "./types";
 export { Cmd, alias, value } from "./decorator";
-export { required } from "./schema";
+export * from "./schema";

@@ -22,9 +22,13 @@ interface Def {
     valueMatch: GenKey;
     required: GenKey;
     requiredMatch: GenKey;
+    length: GenKey;
+    lengthMatch: GenKey;
+    pattern: GenKey;
+    lpatternMatch: GenKey;
 }
 
-const keys = ["alias", "value", "required"];
+const keys = ["alias", "value", "required", "length", "pattern"];
 const META: any = {};
 keys.forEach(k => {
     META[k] = (property: string): string => {

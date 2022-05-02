@@ -1,7 +1,13 @@
 import { META_DEF, META_KEY, propertyMatch } from "./consts";
-import { RequiredMetaDef } from "./types";
-import { property } from "./decorator";
+import { LengthMetaDef, PatternMetaDef, RequiredMetaDef } from "./types";
 
+
+export function property(): PropertyDecorator {
+    return (target: Object, key: string | symbol) => {
+        const k = META_KEY.property(key as string);
+        return Reflect.defineMetadata(k, key, target);
+    };
+}
 
 export function required(): PropertyDecorator {
     return (target: Object, key: string | symbol) => {
@@ -26,4 +32,40 @@ export function requiredMeta(target: object): Map<string, RequiredMetaDef> {
         }
     }
     return mm;
+}
+
+/**
+ * string length
+ * @param opt
+ * @returns
+ */
+export function length(opt: { min?: number, max?: number; }): PropertyDecorator {
+    return (target: Object, key: string | symbol) => {
+        property()(target, key);
+        const k = META_DEF.length(key as string);
+        return Reflect.defineMetadata(k, { key, maxLength: opt.max, minLength: opt.min }, target, key);
+    };
+}
+
+export function lengthMeta(target: object, propertyKey: string): LengthMetaDef | undefined {
+    const k = META_DEF.length(propertyKey as string);
+    return Reflect.getMetadata(k, target, propertyKey);
+}
+
+/**
+ * string pattern
+ * @param opt
+ * @returns
+ */
+export function pattern(re: string): PropertyDecorator {
+    return (target: Object, key: string | symbol) => {
+        property()(target, key);
+        const k = META_DEF.pattern(key as string);
+        return Reflect.defineMetadata(k, { key, value: re }, target, key);
+    };
+}
+
+export function patternMeta(target: object, propertyKey: string): PatternMetaDef | undefined {
+    const k = META_DEF.pattern(propertyKey as string);
+    return Reflect.getMetadata(k, target, propertyKey);
 }
