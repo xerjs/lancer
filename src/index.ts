@@ -10,20 +10,24 @@ export class Lancer extends Avalon {
         super.initialize(servs);
     }
 
-    protected findCmd(name: string): ClassType {
-        for (const ctr of this.allClass) {
-            const dd = CmdMeta(ctr);
-            if (dd?.cmd === name) {
-                return ctr;
+    protected findCmd(names: string[]): ClassType {
+        const ss = new Set(names);
+        ss.add("");
+        for (const name of ss) {
+            for (const ctr of this.allClass) {
+                const dd = CmdMeta(ctr);
+                if (dd?.cmd === name) {
+                    return ctr;
+                }
             }
         }
-        throw new Error(`resolve ${name} error`);
+        throw new Error(`cant resolve any ${names.join("/")}`);
     }
 
     getCommander(args: string[]): Commander {
         const argv = require("minimist")(args);
         const names: string[] = argv._.length ? argv._ : [];
-        const svcCmd = this.findCmd(names[0] || "");
+        const svcCmd = this.findCmd(names);
 
         this.checkSchema(svcCmd, argv);
         const cmder: Commander = this.resolve(svcCmd);

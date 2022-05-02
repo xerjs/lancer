@@ -39,7 +39,7 @@ export class StrBox implements Commander {
     args!: string[];
     sourceArgs!: string[];
 
-    @length({ min: 3 })
+    @length({ min: 3, max: 5 })
     input!: string;
 
     @pattern("^lx\\w+0")

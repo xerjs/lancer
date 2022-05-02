@@ -1,7 +1,6 @@
 
 export interface Commander {
     execute(): Promise<void>;
-    args: string[];
     sourceArgs: string[];
 }
 
