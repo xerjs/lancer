@@ -1,6 +1,6 @@
 {
   "name": "@xerjs/lancer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "adapter minimist",
   "main": "src/index.js",
   "repository": {
