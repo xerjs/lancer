@@ -17,3 +17,7 @@ export function schemaMatch(schema: any, obj: any): ErrorObject | undefined {
         return validateFn.errors[0];
     }
 }
+
+export function getProperty(instance: unknown, key: string): unknown {
+    return (instance as any)[key];
+}

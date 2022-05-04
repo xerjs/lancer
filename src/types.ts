@@ -12,6 +12,10 @@ export interface ValueMetaDef extends BaseMetaDef {
     value: unknown;
 }
 
+export interface AliasMetaDef extends BaseMetaDef {
+    alias: string;
+}
+
 export interface RequiredMetaDef extends BaseMetaDef {
     required: boolean;
 }

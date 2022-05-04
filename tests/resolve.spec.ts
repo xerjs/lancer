@@ -28,4 +28,10 @@ describe("lancer base", () => {
         const args = "--y1 4 --can".split(" ");
         assert.throw(() => container.getCommander(args), "required");
     });
+
+    it("set alias", () => {
+        const cmd = container.getCommander(strs) as Dox;
+        assert.ok(cmd);
+        assert.equal(cmd.inp, cmd.input);
+    });
 });

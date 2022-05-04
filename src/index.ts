@@ -1,9 +1,9 @@
 import { Avalon, ClassType } from "@xerjs/avalon";
 import { META_KEY } from "./consts";
-import { typeMeta, valueMeta } from "./decorator";
+import { aliasMeta, typeMeta, valueMeta } from "./decorator";
 import { requiredMeta, lengthMeta, patternMeta, propertyMeta, rangeMeta } from "./schema";
 import { Commander } from "./types";
-import { CmdMeta, schemaMatch } from "./utils";
+import { CmdMeta, getProperty, schemaMatch } from "./utils";
 
 
 export class Lancer extends Avalon {
@@ -37,7 +37,31 @@ export class Lancer extends Avalon {
 
         cmder.sourceArgs = names;
         this.assignValue(svcCmd, cmder);
+        this.setAlias(svcCmd, cmder);
         return cmder;
+    }
+
+    setAlias(svc: ClassType, instance: unknown): void {
+        const mm = aliasMeta(svc.prototype);
+        for (const [f1, f2] of mm) {
+            if (typeof getProperty(instance, f1) === "undefined") {
+                const val = getProperty(instance, f2);
+                if (typeof val !== "undefined") {
+                    Object.assign(instance, { [f1]: val });
+                }
+                continue;
+            }
+        }
+
+        for (const [f1, f2] of mm) {
+            if (typeof getProperty(instance, f2) === "undefined") {
+                const val = getProperty(instance, f1);
+                if (typeof val !== "undefined") {
+                    Object.assign(instance, { [f2]: val });
+                }
+                continue;
+            }
+        }
     }
 
     setSchema(svc: ClassType): void {

@@ -1,9 +1,12 @@
-import { Cmd, value, Commander, Lancer, required, property, length, pattern, range } from "../src";
+import { Cmd, value, Commander, Lancer, required, property, length, pattern, range, alias } from "../src";
 
 @Cmd("")
 export class Dox implements Commander {
 
     sourceArgs!: string[];
+
+    @alias("input")
+    inp!: string;
 
     @value("input")
     input!: string;

@@ -3,8 +3,8 @@
 import "reflect-metadata";
 import { Provider, ClassType, designType } from "@xerjs/avalon";
 import { META_KEY, META_DEF, propertyMatch } from "./consts";
-import { LengthMetaDef, PatternMetaDef, Types, ValueMetaDef } from "./types";
-import { property } from "./schema";
+import { AliasMetaDef, ValueMetaDef } from "./types";
+import { property, } from "./schema";
 
 export function Cmd(name: string, ext?: ClassType): ClassDecorator {
     return (target) => {
@@ -19,6 +19,26 @@ export function alias<T>(long: keyof T): PropertyDecorator {
         const k = META_DEF.alias(key as string);
         return Reflect.defineMetadata(k, { key, alias: long, }, target, key);
     };
+}
+
+/**
+ * aliasMeta
+ * @param target property
+ */
+export function aliasMeta(target: object): Map<string, string> {
+    const mm = new Map<string, string>();
+    for (const metaKey of Reflect.getMetadataKeys(target) as string[]) {
+        const key = propertyMatch(metaKey);
+        if (key) {
+            const k = META_DEF.alias(key);
+            const meta = Reflect.getMetadata(k, target, key) as AliasMetaDef;
+            if (meta) {
+                mm.set(key, meta.alias);
+            }
+        }
+
+    }
+    return mm;
 }
 
 /**
