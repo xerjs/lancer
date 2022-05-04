@@ -1,4 +1,5 @@
 import { Avalon, ClassType } from "@xerjs/avalon";
+import { META_KEY } from "./consts";
 import { typeMeta, valueMeta } from "./decorator";
 import { requiredMeta, lengthMeta, patternMeta, propertyMeta, rangeMeta } from "./schema";
 import { Commander } from "./types";
@@ -29,6 +30,7 @@ export class Lancer extends Avalon {
         const names: string[] = argv._.length ? argv._ : [];
         const svcCmd = this.findCmd(names);
 
+        this.setSchema(svcCmd);
         this.checkSchema(svcCmd, argv);
         const cmder: Commander = this.resolve(svcCmd);
         Object.assign(cmder, argv); //赋值字段
@@ -38,7 +40,9 @@ export class Lancer extends Avalon {
         return cmder;
     }
 
-    checkSchema(svc: ClassType, argv: unknown) {
+    setSchema(svc: ClassType): void {
+        const schema = Reflect.getMetadata(META_KEY.schema, svc);
+        if (schema) return;
         const required: string[] = [];
         const properties: any = {};
         requiredMeta(svc.prototype).forEach((v) => v.required ? required.push(v.key) : 0);
@@ -66,9 +70,17 @@ export class Lancer extends Avalon {
             }
         });
 
-        const err = schemaMatch({ type: "object", required, properties }, argv);
+        Reflect.defineMetadata(META_KEY.schema, { type: "object", required, properties }, svc);
+    }
+
+    checkSchema(svc: ClassType, argv: unknown) {
+        const schema = Reflect.getMetadata(META_KEY.schema, svc);
+        if (!schema) {
+            throw new Error(`null schema of [class ${svc.name}]`);
+        }
+        const err = schemaMatch(schema, argv);
         if (err) {
-            throw new Error(err.instancePath + ": " + err.message);
+            throw new Error(`[class ${svc.name}] error ${err.instancePath} ${err.message}`);
         }
     }
 

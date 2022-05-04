@@ -6,6 +6,7 @@ export const META_KEY = {
     property: (propertyKey: string): string => {
         return META_KEY.profix + propertyKey;
     },
+    schema: "lancer:schema:",
 } as const;
 
 export function propertyMatch(long: string): string {
