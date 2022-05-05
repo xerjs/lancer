@@ -5,8 +5,8 @@ export class Dox implements Commander {
 
     sourceArgs!: string[];
 
-    @alias("input")
-    inp!: string;
+    @alias<Dox>("input")
+    i!: string;
 
     @value("input")
     input!: string;
@@ -22,6 +22,9 @@ export class Dox implements Commander {
 
     @required()
     y1!: number;
+
+    @alias<Dox>("y0")
+    y!: number;
 
     async execute() {
 

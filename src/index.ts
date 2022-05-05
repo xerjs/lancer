@@ -30,14 +30,15 @@ export class Lancer extends Avalon {
         const names: string[] = argv._.length ? argv._ : [];
         const svcCmd = this.findCmd(names);
 
+        this.setAlias(svcCmd, argv);
         this.setSchema(svcCmd);
         this.checkSchema(svcCmd, argv);
+
         const cmder: Commander = this.resolve(svcCmd);
         Object.assign(cmder, argv); //赋值字段
 
         cmder.sourceArgs = names;
         this.assignValue(svcCmd, cmder);
-        this.setAlias(svcCmd, cmder);
         return cmder;
     }
 
