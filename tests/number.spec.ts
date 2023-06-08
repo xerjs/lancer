@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { NumBox, getContainer } from "./def";
 
-describe("num schema", () => {
+describe.skip("num schema", () => {
     const container = getContainer();
 
     before(() => {

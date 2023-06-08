@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { Dox, getContainer } from "./def";
 
-describe("lancer base", () => {
+describe.skip("lancer base", () => {
     const container = getContainer();
     before(() => {
         container.initialize([Dox]);

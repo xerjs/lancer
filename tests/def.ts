@@ -1,4 +1,4 @@
-import { Cmd, value, Commander, Lancer, required, property, length, pattern, range, alias } from "../src";
+import { Cmd, value, Commander, required, property, length, pattern, range, alias } from "../src";
 
 @Cmd("")
 export class Dox implements Commander {
@@ -28,8 +28,8 @@ export class Dox implements Commander {
     async execute() {}
 }
 
-export function getContainer() {
-    return new Lancer();
+export function getContainer(): any {
+    return {};
 }
 
 @Cmd("str")

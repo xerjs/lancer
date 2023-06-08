@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { Provider } from "@xerjs/avalon";
-import { MetaUtil } from "@xerjs/avalon/dist/meta/util";
+import { Provider, MetaUtil } from "@xerjs/avalon";
 import { META_KEY, META_DEF, propertyMatch } from "./consts";
 import { AliasMetaDef, ValueMetaDef } from "./types";
 import { property } from "./schema";
@@ -13,10 +12,10 @@ const zInt = z.number().int();
 
 export const spearMeta = new MetaUtil("lancer");
 
-type FieldOpt = { input: string; zt?: ZodTypeAny };
+type FieldOpt = { arg: string; zt?: ZodTypeAny };
 
 export const field = spearMeta.propertyDecorator<FieldOpt>((opt) => {
-    z.object({ input: zString }).parse(opt);
+    z.object({ arg: zString }).parse(opt);
     return opt;
 });
 

@@ -8,7 +8,7 @@ function parseArgv(): Argv {
 }
 
 interface MetaMix {
-    input: string;
+    arg: string;
     zt?: ZodTypeAny;
     alias: string;
 }
@@ -32,8 +32,8 @@ export class Spear {
         const mk = spearMeta.propertyKeys(cls);
         for (const pk of mk) {
             const meta = spearMeta.propertyValue(cls, pk) as MetaMix;
-            if (meta.input) {
-                const argKey = meta.input === "." ? pk : meta.input;
+            if (meta.arg) {
+                const argKey = meta.arg === "." ? pk : meta.arg;
                 const t = spearMeta.propertyType(cls, pk);
                 const zType = meta.zt || simpleParser.get(t)!;
                 const inputVal = argv[argKey];
@@ -68,9 +68,10 @@ export class Spear {
         const res = new Map<string, any>();
         for (const pk of mk) {
             const meta = spearMeta.propertyValue(cls, pk) as MetaMix;
-            if (meta.input) {
+            if (meta.arg) {
+                const argKey = meta.arg === "." ? pk : meta.arg;
                 const t = spearMeta.propertyType(cls, pk);
-                res.set(meta.input, t);
+                res.set(argKey, t);
             }
             if (meta.alias) {
                 res.set(meta.alias, pk);

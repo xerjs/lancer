@@ -136,5 +136,6 @@ import { CmdMeta, getProperty, schemaMatch } from "./utils";
 // }
 
 export * from "./types";
-export { Cmd, alias, value } from "./decorator";
+export * from "./decorator";
 export * from "./schema";
+export * from "./spear";

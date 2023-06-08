@@ -12,10 +12,10 @@ export class Cat implements Commander {
     }
     sourceArgs!: string[];
 
-    @field({ input: "." })
+    @field({ arg: "." })
     head!: number;
 
-    @field({ input: "." })
+    @field({ arg: "." })
     input?: string;
 
     @alias("input")
@@ -23,8 +23,8 @@ export class Cat implements Commander {
 }
 
 function main() {
-    const cat = AvalonContainer.root.resolve(Cat) as Cat;
-    const spear = AvalonContainer.root.resolve(Spear) as Spear;
+    const cat = AvalonContainer.root.resolve(Cat);
+    const spear = AvalonContainer.root.resolve(Spear);
     console.log(spear.info(cat));
     spear.parse(cat);
     cat.execute();

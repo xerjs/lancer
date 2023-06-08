@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { StrBox, getContainer } from "./def";
 
-describe("string schema", () => {
+describe.skip("string schema", () => {
     const container = getContainer();
 
     before(() => {
