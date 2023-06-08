@@ -1,25 +1,34 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import "reflect-metadata";
-import { Provider, ClassType, designType } from "@xerjs/avalon";
+import { Provider } from "@xerjs/avalon";
+import { MetaUtil } from "@xerjs/avalon/dist/meta/util";
 import { META_KEY, META_DEF, propertyMatch } from "./consts";
 import { AliasMetaDef, ValueMetaDef } from "./types";
-import { property, } from "./schema";
+import { property } from "./schema";
+import { ZodTypeAny, z } from "zod";
 
-export function Cmd(name: string, ext?: ClassType): ClassDecorator {
-    return (target) => {
-        Provider({ ext })(target);
-        Reflect.defineMetadata(META_KEY.cmd, { cmd: name }, target);
-    };
-}
+const zString = z.string();
+const zNumber = z.number();
+const zInt = z.number().int();
 
-export function alias<T>(long: keyof T): PropertyDecorator {
-    return (target: Object, key: string | symbol) => {
-        property()(target, key);
-        const k = META_DEF.alias(key as string);
-        return Reflect.defineMetadata(k, { key, alias: long, }, target, key);
-    };
-}
+export const spearMeta = new MetaUtil("lancer");
+
+type FieldOpt = { input: string; zt?: ZodTypeAny };
+
+export const field = spearMeta.propertyDecorator<FieldOpt>((opt) => {
+    z.object({ input: zString }).parse(opt);
+    return opt;
+});
+
+export const Cmd = spearMeta.classDecorator<string>((name) => {
+    zString.parse(name || "");
+    return { cmd: name };
+});
+
+export const alias = spearMeta.propertyDecorator<string>((long) => {
+    zString.parse(long);
+    return { alias: long };
+});
 
 /**
  * aliasMeta
@@ -36,7 +45,6 @@ export function aliasMeta(target: object): Map<string, string> {
                 mm.set(key, meta.alias);
             }
         }
-
     }
     return mm;
 }
@@ -70,12 +78,12 @@ export function valueMeta(target: object): Map<string, ValueMetaDef> {
     return mm;
 }
 
-export function typeMeta(target: object): Map<string, ClassType> {
-    const mm = new Map<string, ClassType>();
+export function typeMeta(target: Function): Map<string, any> {
+    const mm = new Map<string, any>();
     for (const metaKey of Reflect.getMetadataKeys(target) as string[]) {
         const propertyKey = propertyMatch(metaKey);
         if (propertyKey) {
-            const tt = designType(target, propertyKey);
+            const tt = spearMeta.propertyType(target, propertyKey);
             if (tt) mm.set(propertyKey, tt);
         }
     }

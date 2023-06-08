@@ -28,11 +28,11 @@
     "mocha": "^10.2.0"
   },
   "scripts": {
-    "build": "npx tsc -p tsconfig-build.json && cp package.json README.md build",
+    "build": "npx tsc -p tsconfig-build.json",
     "test": "mocha"
   },
   "files": [
-    "src"
+    "dist"
   ],
   "author": "lusionx",
   "license": "MIT"

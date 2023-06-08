@@ -2,10 +2,9 @@ import { Cmd, value, Commander, Lancer, required, property, length, pattern, ran
 
 @Cmd("")
 export class Dox implements Commander {
-
     sourceArgs!: string[];
 
-    @alias<Dox>("input")
+    @alias("input")
     i!: string;
 
     @value("input")
@@ -23,12 +22,10 @@ export class Dox implements Commander {
     @required()
     y1!: number;
 
-    @alias<Dox>("y0")
+    @alias("y0")
     y!: number;
 
-    async execute() {
-
-    }
+    async execute() {}
 }
 
 export function getContainer() {

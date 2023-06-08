@@ -1,3 +1,9 @@
+import { ClassType } from "@xerjs/avalon/dist/meta/type";
+
+export interface Argv {
+    [arg: string]: any;
+    _: string[];
+}
 
 export interface Commander {
     execute(): Promise<void>;
