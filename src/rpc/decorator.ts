@@ -2,20 +2,22 @@ import { Provider, MetaUtil } from "@xerjs/avalon";
 
 export const rpcMeta = new MetaUtil("lancer.rpc");
 
-type RpcOpt = {
+export type RpcOpt = {
     trans: string;
+    path?: string;
 };
 export const rpc = rpcMeta.classDecorator<RpcOpt>((x) => {
     x = x || {};
     x.trans = x.trans || "axios";
+    Object.freeze(x);
     return x;
 });
 
-type FunOpt = {
-    fun: string;
+export type FunOpt = {
+    path: string;
 };
 export const rpcFun = rpcMeta.propertyDecorator<FunOpt>((x) => {
     x = x || {};
-    x.fun = ".";
+    Object.freeze(x);
     return x;
 });

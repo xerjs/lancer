@@ -10,6 +10,8 @@ interface RcpDef {
     info(): Promise<{ id: string; version: string }>;
 }
 
+const perfix = "http://127.0.0.1";
+
 @Provider()
 @rpc()
 class RpcCli implements RcpDef {
@@ -34,8 +36,24 @@ describe("lance gae master", () => {
 
     it("info base", () => {
         const list = master.info(RpcCli);
-        const res = Object.fromEntries(list.map((e) => [e.name, e.pars]));
 
-        assert.deepEqual(res, { say: [], now: [], info: [] });
+        const pars = Object.fromEntries(list.map((e) => [e.name, e.pars]));
+        assert.deepEqual(pars, { say: [], now: [], info: [] });
+
+        const path = Object.fromEntries(list.map((e) => [e.name, e.path]));
+        assert.deepEqual(path, { say: "/RpcCli/say", now: "/RpcCli/now", info: "/RpcCli/info" });
+    });
+
+    it("info axios", () => {
+        const list = master.info(RpcCli);
+        const ins = master.transAxios(list);
+        for (const [mm, fn] of Object.entries(ins)) {
+            const conf = fn({ a: 1 });
+
+            assert.deepEqual(conf.data.args, [{ a: 1 }]);
+            assert.equal(conf.method, "POST");
+            assert.hasAllKeys(conf.params, ["_t"]);
+            assert.equal(conf.url, `/RpcCli/${mm}`);
+        }
     });
 });
