@@ -139,3 +139,4 @@ export * from "./types";
 export * from "./decorator";
 export * from "./schema";
 export * from "./spear";
+export * from "./rpc";
