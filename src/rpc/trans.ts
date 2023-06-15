@@ -23,7 +23,7 @@ export class AxiosTrans implements Trans {
                 return {
                     url: info.path,
                     params: { _t: Math.random() },
-                    data: { args },
+                    data: { args, path: info.path },
                     headers: { "User-Agent": "@xerjs/lancer rpc gae" },
                 };
             };

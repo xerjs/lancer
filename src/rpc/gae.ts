@@ -1,6 +1,6 @@
 import { Provider, ClassType, AvalonContainer } from "@xerjs/avalon";
 import { FunOpt, RpcOpt, rpcMeta } from "./decorator";
-import axios, { Axios, AxiosRequestConfig } from "axios";
+import { Axios } from "axios";
 import { MethodInfo } from "./types";
 import { AxiosTrans } from "./trans";
 

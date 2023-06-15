@@ -11,8 +11,6 @@ interface RcpDef {
     info(): Promise<{ id: string; version: string }>;
 }
 
-const perfix = "http://127.0.0.1";
-
 @Provider()
 @rpc()
 class RpcCli implements RcpDef {
@@ -68,7 +66,7 @@ describe("lance gae master", () => {
             if (isAxiosError(error)) {
                 const { config } = error;
                 assert.equal(config?.baseURL, baseURL);
-                assert.equal(config?.data, JSON.stringify({ args: [] }));
+                assert.equal(config?.data, JSON.stringify({ args: [], path: "/RpcCli/say" }));
                 assert.equal(config?.url, "/RpcCli/say");
             }
         }
